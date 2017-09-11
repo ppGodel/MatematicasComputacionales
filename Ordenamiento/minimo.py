@@ -1,0 +1,59 @@
+cnt = 0
+
+
+def minimo(arr):
+    k=arr[0]
+    global cnt
+    for w in arr:
+        cnt+=1
+        if(w<k):
+            k=w
+    return k
+
+
+def ordenar(arr):
+    arrsort=[]
+    for k in range(len(arr)):
+        w=minimo(arr)
+        arr.remove(w)
+        arrsort.append(w)
+    return arrsort
+
+def minimo2(arr):
+    aux = arr
+    global cnt
+    result = -1
+    for i in range(0,len(arr)):
+        #del aux[i]
+        esminimo = True
+        for j in range(0, len(aux)):
+            cnt+=1
+            if arr[i] > arr[j]:
+                esminimo = False
+                break
+        #print(esminimo, i,j,arr[i], arr[j])
+        if esminimo:
+            result = i
+            break
+        else:
+            aux = arr        
+    return result
+
+def ordenamientobruto(arr):
+    aux = arr
+    result=[]
+    for i in range(0,len(arr)):
+        m = minimo(aux)
+        result.append(aux[m])
+        del aux[m]
+    return result
+
+import random
+p = random.sample(range(2,102), 100)
+cnt = 0
+print(p)
+print(p[minimo(p)])
+print(min(p))
+print(ordenar(p))
+print(cnt)
+
