@@ -1,0 +1,19 @@
+class Pila:
+    def __init__():
+        self.pila = []
+
+    def obtener():
+        return self.pila.pop()
+    def meter(e)
+        self.pila.push(e)
+        return len(self.pila)
+    @property
+    def longitud():
+        return len(self.pila)
+    
+
+p = Pila()
+p.meter(1)
+p.meter(2)
+print(p.longitud)
+print(p.obtener())
