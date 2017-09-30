@@ -81,7 +81,7 @@ def BFS(g,ni):
 g= Grafo()
 g.conecta('a','b',3)
 g.conecta('a','c',3)
-g.conecta('a','d',a)
+g.conecta('a','d',1)
 g.conecta('a','d',2)
 g.conecta('b','e',2)
 g.conecta('b','f',2)
