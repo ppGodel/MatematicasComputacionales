@@ -1,3 +1,5 @@
+from heapq import heappop, heappush
+
 def flatten(L):
     while len(L) > 0:
         yield L[0]
@@ -30,18 +32,30 @@ class Grafo:
                     comp.conecta(v, w, 1)
         return comp
 
-	def shortest(self, v, w): # Dijkstra's algorithm
-			q = [(0, v, ())] # arreglo "q" de las "Tuplas" de lo que se va a almacenar dondo 0 es la distancia, v el nodo y () el "camino" hacia el
-			visited = set() #Conjunto de visitados
-			while len(q) > 0: #mientras exista un nodo pendiente
-				(l, u, p) = heappop(q) # Se toma la tupla con la distancia menor
-				if u not in visited: # si no lo hemos visitado
-					visited.add(u) #se agrega a visitados
-					if u == w: #si es el nodo final#
-						return list(flatten(p))[::-1] + [u] #se regresa el camino
-				p = (u, p) #Tupla del nodo y el camino
-				for n in self[u].neighbors: #Para cada hijo del nodo actual
-					if n not in visited: #si no lo hemos visitado
-						el = self.vecinos[u][n] #se toma la distancia del nodo acutal hacia el nodo hijo
-						heappush(q, (l + el, n, p)) #Se agrega al arreglo "q" la distancia actual mas la ditanacia hacia el nodo hijo, el nodo hijo n hacia donde se va, y el camino
-			return None
+    def shortest(self, v): # Dijkstra's algorithm
+        q = [(0, v, ())] # arreglo "q" de las "Tuplas" de lo que se va a almacenar dondo 0 es la distancia, v el nodo y () el "camino" hacia el
+        dist = dict() #diccionario de distancias 
+        visited = set() #Conjunto de visitados
+        while len(q) > 0: #mientras exista un nodo pendiente
+            (l, u, p) = heappop(q) # Se toma la tupla con la distancia menor
+            if u not in visited: # si no lo hemos visitado
+                visited.add(u) #se agrega a visitados
+                dist[u] = (l,u,list(flatten(p))[::-1] + [u])  	#agrega al diccionario
+            p = (u, p) #Tupla del nodo y el camino
+            for n in self.vecinos[u]: #Para cada hijo del nodo actual
+                if n not in visited: #si no lo hemos visitado
+                    el = self.E[(u,n)] #se toma la distancia del nodo acutal hacia el nodo hijo
+                    heappush(q, (l + el, n, p)) #Se agrega al arreglo "q" la distancia actual mas la ditanacia hacia el nodo hijo, el nodo hijo n hacia donde se va, y el camino
+        return dist #regresa el diccionario de distancias
+			
+			
+g= Grafo()
+g.conecta('a','b', 1)
+g.conecta('a','c', 1)
+g.conecta('a','d', 1)
+g.conecta('a','e', 1)
+g.conecta('c','e', 1)
+g.conecta('c','f', 10)
+g.conecta('b','f', 1)
+
+print(g.shortest('c'))
