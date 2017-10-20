@@ -1,4 +1,5 @@
 from heapq import heappop, heappush
+from copy import deepcopy
 
 def flatten(L):
     while len(L) > 0:
@@ -47,6 +48,30 @@ class Grafo:
                     el = self.E[(u,n)] #se toma la distancia del nodo acutal hacia el nodo hijo
                     heappush(q, (l + el, n, p)) #Se agrega al arreglo "q" la distancia actual mas la ditanacia hacia el nodo hijo, el nodo hijo n hacia donde se va, y el camino
         return dist #regresa el diccionario de distancias
+
+    def kruskal(self):
+        e = deepcopy(self.E)
+        arbol = Grafo()
+        peso = 0
+        comp = dict()
+        t = sorted(e.keys(), key = lambda k: e[k], reverse=True)              nuevo = set()
+        while len(t) > 0 and len(nuevo) < len(self.V):
+            #print(len(t)) 
+            arista = t.pop()
+            w = e[arista]    
+            del e[arista]
+            (u,v) = arista
+            c = comp.get(v, {v})
+            if u not in c:
+                #print('u ',u, 'v ',v ,'c ', c)
+                arbol.conecta(u,v,w)
+                peso += w
+                nuevo = c.union(comp.get(u,{u}))
+                for i in nuevo:
+                    comp[i]= nuevo
+        print('MST con peso', peso, ':', nuevo, '\n', arbol.E)
+        return arbol
+
 			
 			
 g= Grafo()
@@ -58,4 +83,5 @@ g.conecta('c','e', 1)
 g.conecta('c','f', 10)
 g.conecta('b','f', 1)
 
+print(g.kruskal())
 print(g.shortest('c'))
