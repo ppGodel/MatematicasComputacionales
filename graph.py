@@ -58,29 +58,30 @@ class Grafo:
                 if v != w and (v, w) not in self.E:
                     comp.conecta(v, w, 1)
         return comp
-    def DFS(self,ni):
-        visitados =[]
-        f=Pila()
-        f.meter(ni)
-        while(f.longitud>0):
-            na =f.obtener()
-            visitados.append(na)
-            ln = self.vecinos[na]
-            for nodo in ln:
-                if nodo not in visitados:
-                    f.meter(nodo)
-	return visitados
-    
+
     def BFS(self,ni):
         visitados =[]
         f=Fila()
         f.meter(ni)
         while(f.longitud>0):
-	    na =f.obtener()
-	    visitados.append(na)
-	    ln = self.vecinos[na]
-	    for nodo in ln:
-		if nodo not in visitados:
+            na = f.obtener()
+            visitados.append(na)
+            ln = self.vecinos[na]
+            for nodo in ln:
+                if nodo not in visitados:
+                    f.meter(nodo)
+        return visitados
+    
+    def DFS(self,ni):
+        visitados =[]
+        f=Pila()
+        f.meter(ni)
+        while(f.longitud>0):
+            na = f.obtener()
+            visitados.append(na)
+            ln = self.vecinos[na]
+            for nodo in ln:
+                if nodo not in visitados:
                     f.meter(nodo)
         return visitados
     
@@ -105,7 +106,8 @@ class Grafo:
         arbol = Grafo()
         peso = 0
         comp = dict()
-        t = sorted(e.keys(), key = lambda k: e[k], reverse=True)              nuevo = set()
+        t = sorted(e.keys(), key = lambda k: e[k], reverse=True)
+        nuevo = set()
         while len(t) > 0 and len(nuevo) < len(self.V):
             #print(len(t)) 
             arista = t.pop()
@@ -140,11 +142,11 @@ print(g.shortest('c'))
 
 print(g)
 k = g.kruskal()
-print(k)
+print([print(x, k.E[x]) for x in k.E])
 
 for r in range(10):
-    ni = random.choice(k.V)
-    dfs =  k.DFS()
+    ni = random.choice(list(k.V))
+    dfs =  k.DFS(ni)
     c = 0
     #print(dfs)
     #print(len(dfs))
@@ -153,5 +155,5 @@ for r in range(10):
             print(dfs[f], dfs[f+1], g.E[(dfs[f],dfs[f+1])] )
             
     c += g.E[(dfs[-1],dfs[0])]
-    print(dfs[-1], dfs[0], g[dfs[-1]].neighbors[dfs[0])
+    print(dfs[-1], dfs[0], g.E[(dfs[-1],dfs[0])])
     print('costo',c)
