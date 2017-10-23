@@ -1,5 +1,31 @@
 from heapq import heappop, heappush
 from copy import deepcopy
+import random
+
+class Fila:
+    def __init__(self):
+        self.fila= []
+    def obtener(self):
+        return self.fila.pop()
+    def meter(self,e):
+        self.fila.insert(0,e)
+        return len(self.fila)
+    @property
+    def longitud(self):
+        return len(self.fila)
+
+class Pila:
+    def __init__(self):
+        self.pila= []
+    def obtener(self):
+        return self.pila.pop()
+    def meter(self,e):
+        self.pila.append(e)
+        return len(self.pila)
+    @property
+    def longitud(self):
+        return len(self.pila)
+
 
 def flatten(L):
     while len(L) > 0:
@@ -32,7 +58,32 @@ class Grafo:
                 if v != w and (v, w) not in self.E:
                     comp.conecta(v, w, 1)
         return comp
-
+    def DFS(self,ni):
+        visitados =[]
+        f=Pila()
+        f.meter(ni)
+        while(f.longitud>0):
+            na =f.obtener()
+            visitados.append(na)
+            ln = self.vecinos[na]
+            for nodo in ln:
+                if nodo not in visitados:
+                    f.meter(nodo)
+	return visitados
+    
+    def BFS(self,ni):
+        visitados =[]
+        f=Fila()
+        f.meter(ni)
+        while(f.longitud>0):
+	    na =f.obtener()
+	    visitados.append(na)
+	    ln = self.vecinos[na]
+	    for nodo in ln:
+		if nodo not in visitados:
+                    f.meter(nodo)
+        return visitados
+    
     def shortest(self, v): # Dijkstra's algorithm
         q = [(0, v, ())] # arreglo "q" de las "Tuplas" de lo que se va a almacenar dondo 0 es la distancia, v el nodo y () el "camino" hacia el
         dist = dict() #diccionario de distancias 
@@ -85,3 +136,22 @@ g.conecta('b','f', 1)
 
 print(g.kruskal())
 print(g.shortest('c'))
+
+
+print(g)
+k = g.kruskal()
+print(k)
+
+for r in range(10):
+    ni = random.choice(k.V)
+    dfs =  k.DFS()
+    c = 0
+    #print(dfs)
+    #print(len(dfs))
+    for f in range(len(dfs) -1):
+            c += g.E[(dfs[f],dfs[f+1])]
+            print(dfs[f], dfs[f+1], g.E[(dfs[f],dfs[f+1])] )
+            
+    c += g.E[(dfs[-1],dfs[0])]
+    print(dfs[-1], dfs[0], g[dfs[-1]].neighbors[dfs[0])
+    print('costo',c)
