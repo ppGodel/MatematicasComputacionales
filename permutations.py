@@ -1,0 +1,19 @@
+
+import time
+def permutation(lst):
+    if len(lst) == 0:
+        return []
+    if len(lst) == 1:
+        return [lst] 
+    l = [] # empty list that will store current permutation
+    for i in range(len(lst)):
+       m = lst[i]
+       remLst = lst[:i] + lst[i+1:]
+       for p in permutation(remLst):
+           l.append([m] + p)
+    return l
+
+data = list('abcdefghij')
+tim=time.clock()
+per = permutation(data)
+print(time.clock()-tim)

@@ -2,6 +2,20 @@ from heapq import heappop, heappush
 from copy import deepcopy
 import random
 
+import time
+def permutation(lst):
+    if len(lst) == 0:
+        return []
+    if len(lst) == 1:
+        return [lst] 
+    l = [] # empty list that will store current permutation
+    for i in range(len(lst)):
+       m = lst[i]
+       remLst = lst[:i] + lst[i+1:]
+       for p in permutation(remLst):
+           l.append([m] + p)
+    return l
+
 class Fila:
     def __init__(self):
         self.fila= []
@@ -125,7 +139,23 @@ class Grafo:
         print('MST con peso', peso, ':', nuevo, '\n', arbol.E)
         return arbol
 
-			
+    def vecinoMasCercano(self):
+        lv = list(self.V)
+        random.shuffle(lv)
+        ni = lv.pop()
+        le = dict()
+        while len(lv)>0:
+            ln = self.v[ni]
+            for nv in ln:
+                le[nv]=self.E[(ni,nv)]
+            menor = min(le.values())
+            lv.append(menor)
+            del lv[menor]
+        return lv
+        
+        
+
+    
 			
 g= Grafo()
 g.conecta('a','b', 1)
@@ -157,3 +187,10 @@ for r in range(10):
     c += g.E[(dfs[-1],dfs[0])]
     print(dfs[-1], dfs[0], g.E[(dfs[-1],dfs[0])])
     print('costo',c)
+
+
+
+data = list('abcdefghij')
+tim=time.clock()
+per = permutation(data)
+print(time.clock()-tim)
