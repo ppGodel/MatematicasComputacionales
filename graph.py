@@ -140,34 +140,37 @@ class Grafo:
         return arbol
 
     def vecinoMasCercano(self):
-        lv = list(self.V)
-        random.shuffle(lv)
-        ni = lv.pop()
-        le = dict()
-        while len(lv)>0:
-            ln = self.v[ni]
-            for nv in ln:
+        ni = random.choice(list(self.V))
+        result=[ni]
+        while len(result) < len(self.V):
+            ln = set(self.vecinos[ni])
+            le = dict()
+            res =(ln-set(result))
+            for nv in res:
                 le[nv]=self.E[(ni,nv)]
-            menor = min(le.values())
-            lv.append(menor)
-            del lv[menor]
-        return lv
+            menor = min(le, key=le.get)
+            result.append(menor)
+            ni=menor
+        return result
         
         
 
     
 			
 g= Grafo()
-g.conecta('a','b', 1)
-g.conecta('a','c', 1)
-g.conecta('a','d', 1)
-g.conecta('a','e', 1)
-g.conecta('c','e', 1)
-g.conecta('c','f', 10)
-g.conecta('b','f', 1)
+g.conecta('a','b', 10)
+g.conecta('a','c', 11)
+g.conecta('a','d', 12)
+g.conecta('a','e', 13)
+g.conecta('b','c', 14)
+g.conecta('b','d', 13)
+g.conecta('b','e', 14)
+g.conecta('c','d', 12)
+g.conecta('c','e', 13)
+g.conecta('d','e', 11)
 
 print(g.kruskal())
-print(g.shortest('c'))
+#print(g.shortest('c'))
 
 
 print(g)
@@ -188,9 +191,21 @@ for r in range(10):
     print(dfs[-1], dfs[0], g.E[(dfs[-1],dfs[0])])
     print('costo',c)
 
+dfs = g.vecinoMasCercano()
+print(dfs)
+c=0
+for f in range(len(dfs) -1):
+    c += g.E[(dfs[f],dfs[f+1])]
+    print(dfs[f], dfs[f+1], g.E[(dfs[f],dfs[f+1])] )
+    
+c += g.E[(dfs[-1],dfs[0])]
+print(dfs[-1], dfs[0], g.E[(dfs[-1],dfs[0])])
+print('costo',c)
 
 
-data = list('abcdefghij')
+
+data = list('abcde')
+#data = ['mty','saltillo', 'chi']
 tim=time.clock()
 per = permutation(data)
 print(time.clock()-tim)
