@@ -1,0 +1,11 @@
+datos = read.csv("ordenamiento.dat", sep = " ")
+plot(x=datos$L, y=datos$B, type="l")
+lines(x=datos$L, y=datos$I, color="Blue")
+lines(x=datos$L, y=datos$S, col="Red")
+lines(x=datos$L, y=datos$Q, col="green")
+lines(x=datos$L, y=datos$L**2, col="orange")
+
+boxplot(datos$B~datos$L)
+boxplot(datos$I~datos$L)
+boxplot(datos$S~datos$L)
+boxplot(datos$Q~datos$L)
